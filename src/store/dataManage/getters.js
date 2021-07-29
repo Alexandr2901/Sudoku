@@ -12,7 +12,9 @@ export default {
     // },
     fields: state => state.fields,
     field: state => difficulty => state.fields[difficulty][0],
-        // getDataOptions: state => {
+    getUser: state => state.user,
+    getToken: state => state.token
+    // getDataOptions: state => {
         //     let x = []
         //     state.fields.forEach(item => {
         //         x.push(item.length-1)

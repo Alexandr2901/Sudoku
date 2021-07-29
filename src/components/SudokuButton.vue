@@ -190,6 +190,7 @@ export default {
 
 .red {
   color: #43A7C7 !important;
+  opacity: 0.75;
 }
 
 .PossiblyValue {

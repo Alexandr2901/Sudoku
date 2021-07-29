@@ -1,17 +1,14 @@
 <template>
   <div class="home">
-    <!-- {{this.Fields}} -->
-    <div class="cards">
-      <div v-for="(item, index) in fieldsN(start,end)"
-      :key="item">
-        <!-- v-bind:easy="Checked(item)" -->
-        <SudokuCard
-        v-on:itemChecked="endUp()"
-        v-bind:stringfield="item"
-        v-bind:fieldid="index+start" />
-      </div>
+    <div @click="toAuth">
+      профиль
     </div>
-    <button @click="maxEndUp()">+</button>
+    <div @click="toSudoku">
+      начать
+    </div>
+    <div>
+      таблица лидеров
+    </div>
   </div>
 </template>
 
@@ -20,104 +17,50 @@ import {
   mapGetters,
   mapActions
 } from 'vuex'
-import SudokuCard from '../components/SudokuCard'
-import methods from '../store/sudoku/sudoku'
+import router from "../router";
 export default {
   name: 'Home',
   data: function () {
     return {
-      start: 0,
-      end: 1,
-      maxEnd:100,
+
       };
   },
   components: {
-    SudokuCard
   },
   computed: {
     ...mapGetters({
-      fieldsN: 'dataManage/fieldsN'
     }),
-    
-    // Checked (stringfield)  {
-    //   let x = new methods.sudokuSolve
-    //   let field = x.fieldInit(stringfield)
-    //   field = x.allPossibly(field)
-    //   return x.checkWinPossibly(field)
-    // }
+
   },
   methods: {
     ...mapActions({
-            initialization: 'sudoku/initialization',
         }),
-    Checked (stringfield)  {
-      let x = new methods.sudokuSolve
-      let param = x.checkWinPossiblyString(stringfield)
-      return param
+    toAuth () {
+      router.push('Auth')
     },
-    startfunc () {
-      // let x =new Set([1,2,3])
-      // x.delete(1)
-      // x.delete(3)
-      // console.log([...x][0]);
-      let x = new methods.sudokuSolve
-      console.log(x.sudokuSolution(this.fieldsN(0,100)[2]))
-      //console.log(this.fieldsN(0,10)[2]);
-      //x.sudokuSolution(this.fieldsN(0,100)[0]).then(console.log(x.option))
-     
-      //return x.sudokuSolution(this.fieldsN(1,2))
-    },
-    endUp() {
-      // this.$nextTick(()=>{
-      //   this.end++
-      // })
-        if (this.maxEnd >= this.end) {
-          setTimeout(() => {
-            this.end++
-          }, 1)
-          //this.end++
-        }
-    },
-    maxEndUp () {
-      this.start += 100
-      this.maxEnd += 200
-      this.endUp()
-    },
-    // test () {
-    //   let y =4
-    //   let x = new Set()
-    //   x.add(1)
-    //   console.log(x);
-    //   y = x
-    //   console.log(y);
-    // }
+    toSudoku () {
+      router.push('Sudoku')
+    }
+
   },
   mounted() {
-    // this.initialization(0)
-    // this.$router.push('/Sudoku')
-    //this.test()
-    // window.addEventListener('scroll', () => {
-    //   console.log('321');
-    //   this.maxEnd+=10
-    //   this.endUp()
-    // });
-    //this.startfunc()
+
   }
 }
 </script>
 
 <style scoped>
-.cards {
+.home{
+  font-size: 4vmin;
+  padding: 2vw;
+  flex-direction: column;
   display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-}
-button{
-  border-color: rgb(0, 0, 0);
-        border-width: 1px;
-        border-style: solid;
-        font-size: 5vmin;
-        min-width: 9vmin;
-        min-height: 9vmin;
+  position: absolute;
+  width: 100%;
+  min-height: 100%;
+  /*justify-content: center;*/
+  box-sizing: border-box;
+  align-items: center;
+  background-color: #F3F1E9;
 }
 </style>

@@ -49,6 +49,16 @@
             {{ phrases.easyChoiceDbClick }}
           </div>
         </transition>
+        <div @click="toHome" class="menuPanelItem">
+          домой
+        </div>
+
+<!--        <div-->
+<!--            @click="router.push('Auth')"-->
+<!--            class="menuPanelItem"-->
+<!--        >-->
+<!--          {{phrases.auth}}-->
+<!--        </div>-->
 <!--        <div-->
 <!--            @click="deleteDataSettings"-->
 <!--            v-if="savedData.difficultyId.filter(item => item.finished).length !== 0"-->
@@ -213,9 +223,11 @@
 
 <script>
 import {mapActions, mapGetters, mapMutations} from 'vuex'
+// import router from '../router';
 import SudokuButton from '../components/SudokuButton'
 import FieldActions from '../store/sudoku/sudokuData'
 import comfortChoice from "@/components/comfortChoice";
+import router from "../router";
 
 export default {
   name: 'Sudoku',
@@ -233,6 +245,7 @@ export default {
       selectedButton: -1,
       sudokuDataClass: null,
       Field: null,
+      fieldId:null,
       comfortChoiceData: {},
       lang: 'ru',
       interval: null,
@@ -248,7 +261,8 @@ export default {
         comfortChoice: 'comfort choice',
         easyChoiceDbClick: 'double click',
         sidePanel: 'side panel',
-        sureConfirm: 'are you sure?'
+        sureConfirm: 'are you sure?',
+        auth: 'authenticate'
       },
       phrasesRu: {
         settings: 'настройки',
@@ -261,7 +275,8 @@ export default {
         comfortChoice: 'удобный выбор',
         easyChoiceDbClick: 'двойной клик',
         sidePanel: 'боковая панель',
-        sureConfirm: 'вы уверены?'
+        sureConfirm: 'вы уверены?',
+        auth:'регистрация'
       },
       viewSettings: {
         easyChoiceShow: true,
@@ -273,18 +288,14 @@ export default {
         removePossibly: false,
         animations: true,
         autoSolve: false
-      },
-      // savedData: {
-      //   // sudokuId: 1,
-      //   difficulty: 1,
-      //   // difficultyId: null
-      // }
+      }
     }
   },
   computed: {
     ...mapGetters({
       getDataOptions: 'dataManage/getDataOptions',
       fields: 'dataManage/fields',
+      getFieldByDifficulty: 'dataManage/field',
     }),
     solved() {
       return this.sudokuDataClass.checkWin()
@@ -324,11 +335,14 @@ export default {
     ...mapActions({
       getField: 'dataManage/getField',
       init: 'dataManage/init',
+      solveField: 'dataManage/solveField',
     }),
     ...mapMutations({
-      solveField: 'dataManage/SOLVE_FIELD',
       ignoreField: 'dataManage/IGNORE_FIELD'
     }),
+    toHome () {
+      router.push('Home')
+    },
     // help() {
     //   let url = "https://www.sudokuwiki.org/sudoku.htm?bd="
     //   this.Field.forEach(element => {
@@ -349,22 +363,15 @@ export default {
       this.easyChoice = false
     },
     nextSudoku() {
-
       if (this.sudokuDataClass.checkWin()) {
-        // console.log( this.sudokuDataClass.getFieldString())
-        this.solveField([this.difficulty, this.sudokuDataClass.getFieldString()])
-        // console.log(this.sudokuDataClass.getFieldString())
-        // this.savedData.difficultyId.find(item => item.difficulty === +this.savedData.difficulty).solved
-        //     .push(this.savedData.difficultyId.find(item => item.difficulty === +this.savedData.difficulty).id)
+        // console.log('hi')
+        this.solveField([this.fieldId, this.sudokuDataClass.getFieldString(), this.difficulty])
       } else {
         this.ignoreField(this.difficulty)
       }
       if (this.fields[this.difficulty].length === 0) {
         this.difficulty = 0
       }
-      // this.savedData.difficultyId.find(item => item.difficulty === +this.savedData.difficulty).id++
-      // console.log(this.fields[this.difficulty].length)
-
       this.Field = null
       this.setLocalField()
     },
@@ -457,35 +464,17 @@ export default {
         this.sudokuDataClass = new FieldActions.sudokuData([...this.viewSettings.advancedPossibly],
             this.viewSettings.autoSolve)
       }
-      this.getField(this.difficulty)
-          .then((result) => {
-            // console.log(result)
-            this.Field = this.sudokuDataClass.setField(result.field)
-          }).catch(e => {
-        console.log(e)
-      })
-
-      //
-
-      // let ar = this.savedData.difficultyId.find(item => item.difficulty === this.savedData.difficulty)
-      // if (ar.maxId < ar.id) {
-      //   ar.id = 0
-      // }
-      //
-      // if (ar.solved.length === ar.maxId) {
-      //   ar.finished = true
-      //   this.savedData.difficulty = this.savedData.difficultyId.find(item => !item.finished).difficulty
-      // } else {
-      //   for (let i = 0; i <= ar.maxId; i++) {
-      //     if (ar.solved.some(item => item === ar.id)) {
-      //       ar.id = (ar.id + 1) % (ar.maxId + 1)
-      //     }
-      //   }
-      // }
-      // this.getField([this.savedData.difficultyId.find(item => item.difficulty === +this.savedData.difficulty).id,
-      //   this.savedData.difficulty])
+      let data = this.getFieldByDifficulty(this.difficulty)
+      if (data === undefined) {
+        this.difficulty = this.fields.filter(item=> item.length !==0)[0][0].difficulty
+        data = this.getFieldByDifficulty(this.difficulty)
+      }
+      this.Field = this.sudokuDataClass.setField(data.field)
+      this.fieldId = data.id
+      // this.getField(this.difficulty)
       //     .then((result) => {
-      //       this.Field = this.sudokuDataClass.setField(result)
+      //       this.fieldId = result.id
+      //       this.Field = this.sudokuDataClass.setField(result.field)
       //     }).catch(e => {
       //   console.log(e)
       // })
@@ -505,32 +494,15 @@ export default {
         window.location.reload()
       }
     },
-    // startSettings() {
-    //   if (!this.savedData.difficultyId) {
-    //     this.savedData.difficultyId = []
-    //     this.getDataOptions.forEach((item, index) => {
-    //       this.savedData.difficultyId.push({
-    //         id: 0,
-    //         difficulty: index,
-    //         maxId: item,
-    //         solved: [],
-    //         finished: false
-    //       })
-    //     })
-    //   }
-    // },
     intervalSave() {
       setTimeout(() => {
         this.viewSettings.advancedPossibly = this.sudokuDataClass.getAdvancedPossibles()
         this.viewSettings.autoSolve = this.sudokuDataClass.getAutoSolve()
         localStorage.setItem('viewSettings', JSON.stringify(this.viewSettings))
-        // localStorage.setItem('savedData', JSON.stringify(this.savedData))
-        // this.pageClick()
       }, 0)
     }
   },
   created() {
-    this.init()
     window.addEventListener('resize', this.updateSize);
   },
   mounted() {
@@ -541,10 +513,6 @@ export default {
     if (localStorage.getItem('viewSettings')) {
       this.viewSettings = {...JSON.parse(localStorage.getItem('viewSettings'))}
     }
-    // if (localStorage.getItem('savedData')) {
-    //   this.savedData = {...JSON.parse(localStorage.getItem('savedData'))}
-    // }
-    // this.startSettings()
     this.setLocalField()
   },
   beforeDestroy() {

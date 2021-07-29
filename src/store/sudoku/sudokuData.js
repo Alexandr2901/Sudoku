@@ -171,9 +171,8 @@ class sudokuData {
                 this.setFieldValue(id, value)
             }
         } else if (this.stack.some(item => item.id === id && item.possibly === value)) {
-            this.stack.splice(this.stack.indexOf(item => item.id === id && item.possibly === value),1)
+            this.stack.splice(this.stack.findIndex(item => (item.id === id && item.possibly === value)),1)
             this.allPossibly()
-            // this.stack.find(item => item.id === id && item.possibly === value).id = null
         }
     }
 

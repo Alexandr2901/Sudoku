@@ -1,29 +1,47 @@
 import axios from 'axios'
 
-const api = 'http://0.0.0.0/api/'
+const api = 'https://sudokueasy.herokuapp.com/api/'
+// const api = 'http://0.0.0.0/'
 
 export default {
     init(context) {
-        // console.log(localStorage.getItem('token') )
-        // console.log(context.state.token)
-        // context.dispatch('signIn').then(() => {
-        context.dispatch('pullData').then(()=>{
-            // console.log('hello')
-            console.log(context.getters.field(1))
+        context.dispatch('check').then(()=>{
+            context.dispatch('solveSudoku').then(()=>{
+                context.dispatch('pullData').then(()=>{
+                    // console.log(context.state.fields)
+                    // console.log(JSON.stringify(context.state.fields))
+                })
+            })
+        }).catch(()=>{
+            context.dispatch('pullData').then(()=>{
+                console.log(context.state.fields)
+            })
         })
-
-        // context.dispatch('pullData').then(res => {
-        //     console.log(res)
-        // })
-        // context.dispatch('solveSudoku').then(res => {
-        //     console.log(res)
-        //     })
-        //
-        // })
-
     },
-    solveField({commit},difficulty){
-        commit('SOLVE_FIELD',difficulty)
+    solveField(context,data){
+        // localStorage.clear()
+        context.commit('SOLVE_FIELD',data)
+        // console.log(context.state.solved.length)
+        if (context.state.token && context.state.solved.length>25) {
+            context.dispatch('solveSudoku').then(()=>{
+                context.dispatch('pullData').then(()=>{
+                })
+            })
+        }
+        if (!context.state.token && context.state.solved.length>25) {
+                context.dispatch('pullData').then(()=>{
+                })
+        }
+        // console.log(context.state.solved)
+        // console.log(context.state.solved.map(item => {
+        //     return {
+        //         id:item,
+        //         solution:item.solution
+        //     }
+        // }))
+        // if () {
+        //
+        // }
         // console.log(data)
     },
     getField(context, difficulty) {
@@ -43,14 +61,17 @@ export default {
         //     '007000329003005040400930060031000400074690038008043005000020000010050080000706000'
         // return '074038690031400000008005043007329000003040005400060930010080050000000020000000706'
     },
-    signUp() {
+    signUp(context,[name,email,password] ) {
+        // console.log(name,email,password)
+        // let [name,email,password] = {...data}
         return new Promise((resolve, reject) => {
             axios.post(api + 'auth/signup', {
-                name: "Test Test Test",
-                email: "authtest2@mail.local",
-                password: "1234567890"
+                name: name,
+                email: email,
+                password: password
             })
                 .then(response => {
+                    // dispatch('signIn',[email,password])
                     resolve(response)
                 })
                 .catch(error => {
@@ -58,13 +79,14 @@ export default {
                 })
         })
     },
-    signIn({commit}) {
+    signIn({commit},[email,password]) {
         return new Promise((resolve, reject) => {
             axios.post(api + 'auth/signin', {
-                email: "authtest2@mail.local",
-                password: "1234567890"
+                email: email,
+                password: password
             })
                 .then(response => {
+                    // console.log(response)
                     commit('SET_TOKEN', response.data.token)
                     resolve(response)
                 })
@@ -73,7 +95,7 @@ export default {
                 })
         })
     },
-    check({state}) {
+    check({state,commit}) {
         return new Promise((resolve, reject) => {
             axios.get(api + 'auth/check', {
                 headers: {
@@ -81,15 +103,18 @@ export default {
                 }
             })
                 .then(response => {
+                    // console.log(response)
+                    commit('CHECK_SUCCESS', response.data.data)
                     resolve(response)
                 })
                 .catch(error => {
-                    console.log('error')
+                    // console.log('error')
                     reject(error)
                 })
         })
     },
     logOut({state, commit}) {
+        commit('LOG_OUT')
         return new Promise((resolve, reject) => {
             axios.get(api + 'auth/logout', {
                 headers: {
@@ -97,7 +122,6 @@ export default {
                 }
             })
                 .then(response => {
-                    commit('LOG_OUT', response.data.token)
                     resolve(response)
                 })
                 .catch(error => {
@@ -106,19 +130,19 @@ export default {
                 })
         })
     },
-    solveSudoku({state}) {
+    solveSudoku({state, commit}) {
+        // console.log(state.solved)
         return new Promise((resolve, reject) => {
             axios.post(api + 'sudoku/solve', {
-                fields: [{
-                    id: 3,
-                    solution: '516378942793412856824965173265891437179243685348756219482637591657189324931524768'
-                }]
+                fields: state.solved
             }, {
                 headers: {
                     'Authorization': "Bearer " + state.token
                 }
             })
                 .then(response => {
+                    // console.log(response)
+                    commit('SOLVE_CLEAN')
                     resolve(response)
                 })
                 .catch(error => {
@@ -127,9 +151,10 @@ export default {
                 })
         })
     },
-    pullData({commit}) {
+    pullData({commit,state}) {
         return new Promise((resolve, reject) => {
-            axios.get(api + 'sudoku/index')
+            let url = state.user? '?userEmail=' + state.user.email: ''
+            axios.get(api + 'sudoku/index'+url )
                 .then(response => {
                     // commit('addPageToLocalPosts', {
                     //     data: response.data,
@@ -145,7 +170,7 @@ export default {
 
                     // console.log(data)
                     // console.log(response.data.data)
-                    // resolve(data)
+                    resolve(response)
                 })
                 .catch(error => {
                     reject(error)

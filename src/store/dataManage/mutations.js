@@ -8,6 +8,7 @@ export default{
     LOG_OUT(state) {
         state.token = ''
         localStorage.removeItem('token')
+        state.user = null
     },
     SET_FIELDS(state,payload) {
         state.fields = payload
@@ -22,15 +23,27 @@ export default{
         // console.log(state.fields[difficulty].length)
     },
     SOLVE_FIELD(state,payload) {
-        // let data = {
-        //     id: state.fields[payload[0]].shift().id,
-        //     solution: payload[1]
-        // }
+        // console.log(state.fields)
         state.solved.push({
-            id: state.fields[payload[0]].shift().id,
+            id: payload[0],
             solution: payload[1]
         })
         localStorage.setItem('solved' ,JSON.stringify(state.solved))
+        // console.log(state.fields[payload[2]].findIndex(item => item.id === payload[0]),1)
+        let index = state.fields[payload[2]].findIndex(item => item.id === payload[0])
+        if (index >0) {
+            state.fields[payload[2]].splice(index,1)
+        }
+        // state.fields[payload[2]].findIndex(item => item.id === payload[0])
         // console.log(state.solved)
+    },
+    SOLVE_CLEAN(state) {
+        state.solved = []
+        localStorage.removeItem('solved')
+    },
+    CHECK_SUCCESS(state, data) {
+        // console.log('check')
+        // console.log(data)
+        state.user = data
     }
 }
