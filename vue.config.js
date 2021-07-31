@@ -1,5 +1,5 @@
 module.exports = {
-    publicPath: './',
+    publicPath: '/Sudoku/',
     pwa: {
       workboxPluginMode: 'GenerateSW',
       workboxOptions: {

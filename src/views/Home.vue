@@ -39,7 +39,7 @@ export default {
       router.push('Auth')
     },
     toSudoku () {
-      router.push('Sudoku')
+      router.push('/')
     }
 
   },
