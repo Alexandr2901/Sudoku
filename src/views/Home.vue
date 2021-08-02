@@ -6,7 +6,7 @@
     <div @click="toSudoku">
       начать
     </div>
-    <div>
+    <div @click="toBoard">
       таблица лидеров
     </div>
   </div>
@@ -40,6 +40,9 @@ export default {
     },
     toSudoku () {
       router.push('/')
+    },
+    toBoard() {
+      router.push('LeaderBoard')
     }
 
   },

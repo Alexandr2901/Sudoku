@@ -5,30 +5,30 @@ const api = 'https://sudokueasy.herokuapp.com/api/'
 
 export default {
     init(context) {
-        context.dispatch('check').then(()=>{
-            context.dispatch('solveSudoku').then(()=>{
-                context.dispatch('pullData').then(()=>{
-                    // console.log(context.state.fields)
-                    // console.log(JSON.stringify(context.state.fields))
+        if(context.state.token) {
+            context.dispatch('check').then(()=>{
+                context.dispatch('solveSudoku').then(()=>{
+                    context.dispatch('pullData').then(()=>{
+                    })
                 })
+            }).catch(()=>{
+                context.dispatch('pullData')
             })
-        }).catch(()=>{
-            context.dispatch('pullData').then(()=>{
-                console.log(context.state.fields)
-            })
-        })
+        } else {
+            context.dispatch('pullData')
+        }
     },
     solveField(context,data){
         // localStorage.clear()
         context.commit('SOLVE_FIELD',data)
-        // console.log(context.state.solved.length)
+        // console.log(context.state.solved)
         if (context.state.token && context.state.solved.length>25) {
             context.dispatch('solveSudoku').then(()=>{
                 context.dispatch('pullData').then(()=>{
                 })
             })
         }
-        if (!context.state.token && context.state.solved.length>25) {
+        if (!context.state.token && context.state.solved.length%25 ===0) {
                 context.dispatch('pullData').then(()=>{
                 })
         }
@@ -86,8 +86,10 @@ export default {
                 password: password
             })
                 .then(response => {
-                    // console.log(response)
+                    console.log(response)
                     commit('SET_TOKEN', response.data.token)
+                    commit('CHECK_SUCCESS', response.data.user)
+
                     resolve(response)
                 })
                 .catch(error => {
@@ -103,7 +105,7 @@ export default {
                 }
             })
                 .then(response => {
-                    // console.log(response)
+                    console.log(response)
                     commit('CHECK_SUCCESS', response.data.data)
                     resolve(response)
                 })
@@ -114,7 +116,6 @@ export default {
         })
     },
     logOut({state, commit}) {
-        commit('LOG_OUT')
         return new Promise((resolve, reject) => {
             axios.get(api + 'auth/logout', {
                 headers: {
@@ -127,7 +128,9 @@ export default {
                 .catch(error => {
                     console.log('error')
                     reject(error)
-                })
+                }).finally(()=>{
+                commit('LOG_OUT')
+            })
         })
     },
     solveSudoku({state, commit}) {
@@ -156,21 +159,21 @@ export default {
             let url = state.user? '?userEmail=' + state.user.email: ''
             axios.get(api + 'sudoku/index'+url )
                 .then(response => {
-                    // commit('addPageToLocalPosts', {
-                    //     data: response.data,
-                    //     page: page
-                    // })
-                    // let data = []
-                    // response.data.data.forEach(item => {
-                    //     data.push(...item)
-                    //     console.log(...item)
-                    // })
-                    // console.log(response.data.data[1].find(item => item.id === 14))
                     commit('SET_FIELDS', response.data.data)
-
-                    // console.log(data)
-                    // console.log(response.data.data)
                     resolve(response)
+                })
+                .catch(error => {
+                    reject(error)
+                })
+        })
+    },
+    pullLeaderBoard() {
+        return new Promise((resolve, reject) => {
+            axios.get(api + 'users/ranking' )
+                .then(response => {
+                    // commit('SET_FIELDS', response.data.data)
+                    // console.log(response.data.data)
+                    resolve(response.data)
                 })
                 .catch(error => {
                     reject(error)

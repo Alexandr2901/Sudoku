@@ -8,6 +8,7 @@ const routes = [
   {path: '/', name: 'Sudoku', component: () => import('../views/Sudoku.vue')},
   {path: '/Auth', name: 'Auth', component: () => import('../views/Auth.vue')},
   {path: '/Home', name: 'Home', component: () => import('../views/Home.vue')},
+  {path: '/LeaderBoard', name: 'LeaderBoard', component: () => import('../views/LeaderBoard.vue')},
   // {path: '/Sudoku', name: 'SudokuHome', component: () => import('../views/Home.vue')},
   {path: '*', component: () => import('../views/Home.vue')}
 ];

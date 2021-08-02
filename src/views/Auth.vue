@@ -34,7 +34,7 @@
       </div>
     </div>
     <div v-else>
-      <div>
+      <div v-if="getUser">
         Вы зашли как:
         {{getUser.name}}
       </div>
@@ -84,11 +84,13 @@ export default {
         })
       }).catch(error => {
         console.log(error.response.data.errors)
-        if (error.response.data.errors.password) {
-          this.password = ''
-        }
-        if (error.response.data.errors.email) {
-          this.email = ''
+        if (error.response.data.errors) {
+          if (error.response.data.errors.password) {
+            this.password = ''
+          }
+          if (error.response.data.errors.email) {
+            this.email = ''
+          }
         }
       })
     },
