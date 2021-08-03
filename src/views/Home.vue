@@ -4,11 +4,22 @@
       профиль
     </div>
     <div @click="toSudoku">
-      начать
+      играть
     </div>
     <div @click="toBoard">
-      таблица лидеров
+      таблица
+      &nbsp;
+      лидеров
     </div>
+    <footer>
+<!--      <div>-->
+<!--        <div>1</div>-->
+<!--        <div>2</div>-->
+<!--      </div>-->
+      <router-link to="About">
+        поддержать
+      </router-link>
+    </footer>
   </div>
 </template>
 
@@ -54,8 +65,8 @@ export default {
 
 <style scoped>
 .home{
-  font-size: 4vmin;
-  padding: 2vw;
+  font-size: 4vh;
+  padding-top: 2vw;
   flex-direction: column;
   display: flex;
   position: absolute;
@@ -64,6 +75,30 @@ export default {
   /*justify-content: center;*/
   box-sizing: border-box;
   align-items: center;
+  user-select: none;
   background-color: #F3F1E9;
+}
+.home>div{
+  width: 55vmin;
+  border-color: white;
+  border-style: solid;
+  border-radius: 8px;
+  padding: 0 3vmin;
+  text-align: center;
+}
+footer{
+  display: flex;
+  flex-direction: row;
+  font-size: 16px;
+  margin-top: auto;
+  background-color: #e2e3fb;
+  width: 100%;
+  padding: 2vmin;
+  box-sizing: border-box;
+  /*text-align: center;*/
+  height: 10vh;
+}
+footer>div{
+  margin-right: 2vmin;
 }
 </style>

@@ -34,7 +34,7 @@
       </div>
     </div>
     <div v-else>
-      <div v-if="getUser">
+      <div style="max-width: 75vw" v-if="getUser">
         Вы зашли как:
         {{getUser.name}}
       </div>
@@ -42,8 +42,6 @@
         выйти
       </button>
     </div>
-
-
   </div>
 </template>
 
@@ -55,9 +53,9 @@ export default {
   name: "Auth",
   data: function () {
     return {
-      name:'qwer',
-      email:'mfbkshj@mail.ru',
-      password:'qwerqwer4',
+      name:'examplename',
+      email:'example@mail.ru',
+      password:'examplepassword',
       isRegistration: true
     }
   },
