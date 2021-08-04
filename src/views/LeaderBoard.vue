@@ -41,7 +41,7 @@ export default {
       pullLeaderBoard: 'dataManage/pullLeaderBoard',
     }),
     back() {
-      router.go(-1)
+      router.push('/Home')
     },
   },
   created() {

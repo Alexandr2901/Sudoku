@@ -47,13 +47,13 @@ export default {
     ...mapActions({
         }),
     toAuth () {
-      router.push('Auth')
+      router.push('/Auth')
     },
     toSudoku () {
       router.push('/')
     },
     toBoard() {
-      router.push('LeaderBoard')
+      router.push('/LeaderBoard')
     }
 
   },
@@ -65,6 +65,8 @@ export default {
 
 <style scoped>
 .home{
+  color: #434691;
+
   font-size: 4vh;
   padding-top: 2vw;
   flex-direction: column;
@@ -85,6 +87,7 @@ export default {
   border-radius: 8px;
   padding: 0 3vmin;
   text-align: center;
+  margin-bottom: 1vmin;
 }
 footer{
   display: flex;

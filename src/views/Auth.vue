@@ -73,7 +73,7 @@ export default {
 
     }),
     back() {
-      router.go(-1)
+      router.push('/Home')
     },
     register() {
       this.signUp([this.name,this.email,this.password]).then(()=>{

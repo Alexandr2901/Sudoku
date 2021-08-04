@@ -45,7 +45,7 @@ export default {
   },
   methods: {
     back() {
-      router.go(-1)
+      router.push('/Home')
     }
   }
 }
