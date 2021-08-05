@@ -301,11 +301,12 @@ export default {
       return this.sudokuDataClass.checkWin()
     },
     phrases() {
-      if (this.lang === 'ru-RU') {
-        return this.phrasesRu
-      } else {
-        return this.phrasesEn
-      }
+      return this.phrasesRu
+      // if (this.lang === 'ru-RU') {
+      //   return this.phrasesRu
+      // } else {
+      //   return this.phrasesEn
+      // }
     },
     possiblyChoice() {
       return (this.selectedButton > -1 && this.viewSettings.prompt) ? this.Field.find(item => item.id === this.selectedButton).possibly : new Set([1, 2, 3, 4, 5, 6, 7, 8, 9])

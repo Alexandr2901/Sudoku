@@ -39,7 +39,7 @@
       <!--        <div>2</div>-->
       <!--      </div>-->
       <router-link to="About">
-        поддержать
+        о проекте
       </router-link>
       <a href="https://github.com/Alexandr2901/Sudoku">
         front-end
