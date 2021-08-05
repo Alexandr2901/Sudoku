@@ -1,6 +1,5 @@
 <template>
   <div class="LeaderBoard">
-  <div v-if="board" class="board">
     <svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true"
          focusable="false" width="2em" height="2em"
          class="back" @click="back"
@@ -11,6 +10,7 @@
       <path fill="#434691"
             d="M239.637 164.987l75.053 75.054H128.137v32H314.69l-75.053 75.054l22.627 22.627l113.681-113.681L262.264 142.36l-22.627 22.627z"/>
     </svg>
+    <div v-if="board" class="board">
     <div class="user">
       <div>место</div>
       <div>имя</div>
@@ -54,14 +54,13 @@ export default {
 
 <style scoped>
 .LeaderBoard{
+  color: #434691;
   background-color: #F3F1E9;
   width: 100vw;
   min-height: 93vh;
   display: flex;
   justify-content: center;
   padding-top: 7vh;
-  /*align-items: center;*/
-
 }
 .board{
   /*padding: 5vmin;*/
@@ -70,22 +69,40 @@ export default {
   /*justify-content: center;*/
   /*align-items: center;*/
 }
+.board:first-child{
+  width: 100%;
+}
 .user{
-  border-color: white;
-  border-style: solid;
+  background-color: #F5F5F5;
   border-radius: 8px;
-  padding: 0 3vw 0 3vw;
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  max-width: 65vw;
-  /*border: black 1px solid;*/
+  /*justify-content: space-between;*/
+  /*max-width: 71vw;*/
+  white-space: nowrap;
+  margin-bottom: 5px;
 }
 .user>div{
   padding: 1vmin;
   overflow: hidden;
   word-wrap: normal;
   min-width: 5vw;
+}
+.user>div:nth-child(odd) {
+  text-align: center;
+}
+.user>div:nth-child(even) {
+  text-align: left;
+  width: 50vmin;
+  /*width: 100%;*/
+}
+.user>div:nth-child(1) {
+  margin: auto;
+  width: 15vmin;
+}
+.user>div:nth-child(3) {
+  margin: auto;
+  width: 25vmin;
 }
 .back{
   position: absolute;

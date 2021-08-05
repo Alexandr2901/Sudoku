@@ -105,7 +105,7 @@ export default {
                 }
             })
                 .then(response => {
-                    console.log(response)
+                    // console.log(response)
                     commit('CHECK_SUCCESS', response.data.data)
                     resolve(response)
                 })
@@ -149,7 +149,7 @@ export default {
                     resolve(response)
                 })
                 .catch(error => {
-                    console.log('error')
+                    // console.log('error')
                     reject(error)
                 })
         })

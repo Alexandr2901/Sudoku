@@ -72,7 +72,7 @@
           <div class="difficultyChoice">
             <div @click="setDifficulty(item[0].difficulty)"
                  v-for="item in fields.filter(item=> item.length !==0)"
-                 v-bind:class="{primaryColor: item[0].difficulty === difficulty}"
+                 v-bind:class="{primaryColor: item[0].difficulty === viewSettings.difficulty}"
                  :key="item[0].difficulty">
               {{ item[0].difficulty }}
             </div>
@@ -248,8 +248,7 @@ export default {
       fieldId:null,
       comfortChoiceData: {},
       lang: 'ru',
-      interval: null,
-      difficulty:1,
+      // difficulty:1,
       phrasesEn: {
         settings: 'settings',
         prompt: 'prompt',
@@ -287,7 +286,8 @@ export default {
         advancedPossibly: [1, 1, 0],
         removePossibly: false,
         animations: true,
-        autoSolve: false
+        autoSolve: false,
+        difficulty:1
       }
     }
   },
@@ -365,13 +365,13 @@ export default {
     nextSudoku() {
       if (this.sudokuDataClass.checkWin()) {
         // console.log('hi')
-        this.solveField([this.fieldId, this.sudokuDataClass.getFieldString(), this.difficulty])
+        this.solveField([this.fieldId, this.sudokuDataClass.getFieldString(), this.viewSettings.difficulty])
       } else {
-        this.ignoreField(this.difficulty)
+        this.ignoreField(this.viewSettings.difficulty)
       }
-      if (this.fields[this.difficulty].length === 0) {
-        this.difficulty = 0
-      }
+      // if (this.fields[this.viewSettings.difficulty].length === 0) {
+      //   this.viewSettings.difficulty = 0
+      // }
       this.Field = null
       this.setLocalField()
     },
@@ -464,14 +464,14 @@ export default {
         this.sudokuDataClass = new FieldActions.sudokuData([...this.viewSettings.advancedPossibly],
             this.viewSettings.autoSolve)
       }
-      let data = this.getFieldByDifficulty(this.difficulty)
+      let data = this.getFieldByDifficulty(this.viewSettings.difficulty)
       if (data === undefined) {
-        this.difficulty = this.fields.filter(item=> item.length !==0)[0][0].difficulty
-        data = this.getFieldByDifficulty(this.difficulty)
+        this.viewSettings.difficulty = this.fields.filter(item=> item.length !==0)[0][0].difficulty
+        data = this.getFieldByDifficulty(this.viewSettings.difficulty)
       }
       this.Field = this.sudokuDataClass.setField(data.field)
       this.fieldId = data.id
-      // this.getField(this.difficulty)
+      // this.getField(this.viewSettings.difficulty)
       //     .then((result) => {
       //       this.fieldId = result.id
       //       this.Field = this.sudokuDataClass.setField(result.field)
@@ -480,8 +480,8 @@ export default {
       // })
     },
     setDifficulty(value) {
-      if (this.difficulty !== value) {
-        this.difficulty = value
+      if (this.viewSettings.difficulty !== value) {
+        this.viewSettings.difficulty = value
         this.setLocalField()
       }
     },
@@ -519,7 +519,6 @@ export default {
     document.removeEventListener('keydown', this.keywordClick)
     document.removeEventListener('click', this.intervalSave)
     window.removeEventListener('resize', this.updateSize)
-    this.interval = null
   },
   updated() {
     if (this.sudokuDataClass.getAutoSolve() && this.sudokuDataClass.checkWin() && this.Field) {

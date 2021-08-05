@@ -36,8 +36,10 @@
     <div v-else>
       <div style="max-width: 75vw" v-if="getUser">
         Вы зашли как:
+
         {{getUser.name}}
       </div>
+      <br>
       <button @click="logOut">
         выйти
       </button>
@@ -132,8 +134,6 @@ button{
   /*background-color: #f5f5f5;*/
   background-color: #e2e3fb;
   color: #434691;
-
-
 }
 h3{
   width: 100%;
