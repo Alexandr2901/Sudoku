@@ -334,7 +334,6 @@ export default {
   },
   methods: {
     ...mapActions({
-      getField: 'dataManage/getField',
       init: 'dataManage/init',
       solveField: 'dataManage/solveField',
     }),

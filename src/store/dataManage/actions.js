@@ -19,9 +19,7 @@ export default {
         }
     },
     solveField(context,data){
-        // localStorage.clear()
         context.commit('SOLVE_FIELD',data)
-        // console.log(context.state.solved)
         if (context.state.token && context.state.solved.length>25) {
             context.dispatch('solveSudoku').then(()=>{
                 context.dispatch('pullData').then(()=>{
@@ -32,38 +30,8 @@ export default {
                 context.dispatch('pullData').then(()=>{
                 })
         }
-        // console.log(context.state.solved)
-        // console.log(context.state.solved.map(item => {
-        //     return {
-        //         id:item,
-        //         solution:item.solution
-        //     }
-        // }))
-        // if () {
-        //
-        // }
-        // console.log(data)
-    },
-    getField(context, difficulty) {
-        // let field
-        // try {
-        //     field = context.state.fields[difficulty][id]
-        // } catch (e) {
-        //     return ''
-        // }
-        // console.log(id, field)
-        // console.log(context.getters.field(difficulty))
-        return context.getters.field(difficulty)
-        // this.pullData()
-        // return  field
-        // 000005160000060000240000000000020300070000004500100080000000000000000012003004000
-        // 000000000000000012003004000000005160000060000240000000000020300070000004500100080
-        //     '007000329003005040400930060031000400074690038008043005000020000010050080000706000'
-        // return '074038690031400000008005043007329000003040005400060930010080050000000020000000706'
     },
     signUp(context,[name,email,password] ) {
-        // console.log(name,email,password)
-        // let [name,email,password] = {...data}
         return new Promise((resolve, reject) => {
             axios.post(api + 'auth/signup', {
                 name: name,
@@ -71,7 +39,6 @@ export default {
                 password: password
             })
                 .then(response => {
-                    // dispatch('signIn',[email,password])
                     resolve(response)
                 })
                 .catch(error => {
@@ -89,7 +56,6 @@ export default {
                     console.log(response)
                     commit('SET_TOKEN', response.data.token)
                     commit('CHECK_SUCCESS', response.data.user)
-
                     resolve(response)
                 })
                 .catch(error => {
@@ -105,12 +71,10 @@ export default {
                 }
             })
                 .then(response => {
-                    // console.log(response)
                     commit('CHECK_SUCCESS', response.data.data)
                     resolve(response)
                 })
                 .catch(error => {
-                    // console.log('error')
                     reject(error)
                 })
         })
@@ -134,7 +98,6 @@ export default {
         })
     },
     solveSudoku({state, commit}) {
-        // console.log(state.solved)
         return new Promise((resolve, reject) => {
             axios.post(api + 'sudoku/solve', {
                 fields: state.solved
@@ -144,12 +107,10 @@ export default {
                 }
             })
                 .then(response => {
-                    // console.log(response)
                     commit('SOLVE_CLEAN')
                     resolve(response)
                 })
                 .catch(error => {
-                    // console.log('error')
                     reject(error)
                 })
         })
@@ -171,8 +132,6 @@ export default {
         return new Promise((resolve, reject) => {
             axios.get(api + 'users/ranking' )
                 .then(response => {
-                    // commit('SET_FIELDS', response.data.data)
-                    // console.log(response.data.data)
                     resolve(response.data)
                 })
                 .catch(error => {
@@ -181,9 +140,3 @@ export default {
         })
     },
 }
-
-// async function q() {
-//     const x = 'http://0.0.0.0/api/sudoku/index'
-//     let response = await fetch(x);
-//     console.log(response.text())
-// }
