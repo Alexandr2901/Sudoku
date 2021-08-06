@@ -134,8 +134,8 @@ export default {
   background: #F5F5F5;
   flex-direction: row;
   flex-wrap: wrap;
-  padding: 0.4vmin;
-  margin: 0.2vmin;
+  padding: 0.5vmin;
+  margin: 0.1vmin;
   box-sizing: border-box;
   color: #434691;
   transition: background-color .3s linear;
@@ -198,6 +198,7 @@ export default {
   height: 30%;
   width: 30%;
   font-size: 33%;
+  line-height: 1.2;
   user-select: none;
 }
 </style>

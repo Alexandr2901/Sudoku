@@ -9,6 +9,7 @@ export default{
         state.token = ''
         localStorage.removeItem('token')
         state.user = null
+        localStorage.removeItem('user')
     },
     SET_FIELDS(state,payload) {
         state.fields = payload
@@ -45,5 +46,6 @@ export default{
         // console.log('check')
         // console.log(data)
         state.user = data
+        localStorage.setItem('user',JSON.stringify(state.user))
     }
 }

@@ -34,12 +34,13 @@
       </div>
     </div>
     <div v-else>
-      <div style="max-width: 75vw" v-if="getUser">
-        Вы зашли как:
-
-        {{getUser.name}}
+      <div style="max-width: 75vw" v-if="getUser" class="inputs">
+        <input @input="changed = true" v-model="user.name" placeholder="name">
+        <input @input="changed = true" v-model="user.email" placeholder="email">
       </div>
-      <br>
+      <button v-if="changed" @click="updateUser">
+        обновить данные
+      </button>
       <button @click="logOut">
         выйти
       </button>
@@ -58,7 +59,12 @@ export default {
       name:'examplename',
       email:'example@mail.ru',
       password:'examplepassword',
-      isRegistration: true
+      isRegistration: true,
+      changed:false,
+      user:{
+        name:'',
+        email:''
+      }
     }
   },
   computed: {
@@ -71,8 +77,8 @@ export default {
     ...mapActions({
       signUp: 'dataManage/signUp',
       signIn: 'dataManage/signIn',
-      logOut: 'dataManage/logOut'
-
+      logOut: 'dataManage/logOut',
+      update: 'dataManage/update',
     }),
     back() {
       router.push('/Home')
@@ -81,6 +87,8 @@ export default {
       this.signUp([this.name,this.email,this.password]).then(()=>{
         this.signIn([this.email,this.password]).then(()=>{
           router.push('Sudoku')
+          this.user.name = this.getUser.name
+          this.user.email = this.getUser.email
         })
       }).catch(error => {
         console.log(error.response.data.errors)
@@ -97,7 +105,22 @@ export default {
     enter() {
       this.signIn([this.email,this.password]).then(()=>{
         router.push('Sudoku')
+        this.user.name = this.getUser.name
+        this.user.email = this.getUser.email
       })
+    },
+    updateUser() {
+      this.update(this.user).then(()=>{
+        this.user.name = this.getUser.name
+        this.user.email = this.getUser.email
+        this.changed = false
+      })
+    }
+  },
+  created() {
+    if (this.getToken) {
+      this.user.name = this.getUser.name
+      this.user.email = this.getUser.email
     }
   }
 }
@@ -131,6 +154,7 @@ button{
   width: 100%;
   min-height: 5vh;
   border: none;
+  margin-top: 1.5vmin;
   /*background-color: #f5f5f5;*/
   background-color: #e2e3fb;
   color: #434691;
