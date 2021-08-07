@@ -52,6 +52,27 @@ class sudokuData {
         return this.wrongIds
     }
 
+    setFieldStack(stringField,basefield, stack) {
+        this.setField(stringField)
+        this.stack = stack
+        this.Field.forEach((item,index)=> {
+            if (item.value !== +basefield[index]) {
+                item.value = +basefield[index]
+                // let x = {...this.Field[item.id]}
+                // x.value = value
+                // this.Field[id] = x
+            }
+        })
+        // console.log('end')
+        // basefield.forEach((item,index)=>{
+        //     if (item !==basefield[index]) {
+        //         this.Field[index].value = item
+        //     }
+        // })
+        this.allPossibly()
+        return this.Field
+    }
+
     setAdvancedPossibly(number) {
         this.autoSolve = false
         this.advancedPossibly.splice(number, 1, !this.advancedPossibly[number])

@@ -147,7 +147,7 @@
               focusable="false" height="1em" preserveAspectRatio="xMidYMid meet"
               style="transform: scale(-1, 1) " viewBox="0 0 24 24" width="1em"
               xmlns="http://www.w3.org/2000/svg"
-              xmlns:xlink="http://www.w3.org/1999/xlink" @click="sudokuDataClass.undoLastValue()">
+              xmlns:xlink="http://www.w3.org/1999/xlink" @click="undoLast">
             <g fill="none">
               <path
                   d="M11.995 4a8 8 0 1 0 7.735 10h-2.081a6 6 0 1 1-5.654-8a5.92 5.92 0 0 1 4.223 1.78L13 11h7V4l-2.351 2.35A7.965 7.965 0 0 0 11.995 4z"
@@ -272,6 +272,14 @@ export default {
       fieldId: null,
       comfortChoiceData: {},
       lang: 'ru',
+      cashedField: {
+        stringfield: '',
+        id: null,
+        stack: null,
+        basefield:'',
+        difficulty:null
+      },
+      cashedShowed: false,
       // difficulty:1,
       phrasesEn: {
         settings: 'settings',
@@ -367,6 +375,12 @@ export default {
     toHome() {
       router.push('Home')
     },
+    undoLast() {
+      this.sudokuDataClass.undoLastValue()
+      this.cashedField.stringfield = this.sudokuDataClass.getFieldString()
+      localStorage.setItem('cashedField', JSON.stringify(this.cashedField))
+
+    },
     // help() {
     //   let url = "https://www.sudokuwiki.org/sudoku.htm?bd="
     //   this.Field.forEach(element => {
@@ -390,7 +404,20 @@ export default {
       if (this.sudokuDataClass.checkWin()) {
         // console.log('hi')
         this.solveField([this.fieldId, this.sudokuDataClass.getFieldString(), this.viewSettings.difficulty])
+        // this.cashedField.id = null
+        // this.cashedField.stringfield = ''
+        // this.cashedField.stack = ''
+        if (this.cashedField.id === this.fieldId) {
+          localStorage.removeItem('cashedField')
+        }
       } else {
+        this.cashedField = {
+          stringfield: '',
+          id: null,
+          stack: null,
+          basefield:'',
+          difficulty:null
+        }
         this.ignoreField(this.viewSettings.difficulty)
       }
       // if (this.fields[this.viewSettings.difficulty].length === 0) {
@@ -407,6 +434,12 @@ export default {
       }
       this.selectedButton = -1
       this.easyChoice = false
+      this.cashedField.stringfield = this.sudokuDataClass.getFieldString()
+      localStorage.setItem('cashedField', JSON.stringify(this.cashedField))
+      // setTimeout(()=>{
+      //
+      // },0)
+
     },
     pageClick() {
       this.selectedButton = -1
@@ -488,20 +521,25 @@ export default {
         this.sudokuDataClass = new FieldActions.sudokuData([...this.viewSettings.advancedPossibly],
             this.viewSettings.autoSolve)
       }
-      let data = this.getFieldByDifficulty(this.viewSettings.difficulty)
-      if (data === undefined) {
-        this.viewSettings.difficulty = this.fields.filter(item => item.length !== 0)[0][0].difficulty
-        data = this.getFieldByDifficulty(this.viewSettings.difficulty)
+      if (this.cashedField.id && !this.cashedShowed) {
+        // console.log('123')
+        this.Field = this.sudokuDataClass.setFieldStack(this.cashedField.basefield,this.cashedField.stringfield, this.cashedField.stack)
+        this.fieldId = this.cashedField.id
+        this.viewSettings.difficulty = this.cashedField.difficulty
+        this.cashedShowed = true
+      } else {
+        let data = this.getFieldByDifficulty(this.viewSettings.difficulty)
+        if (data === undefined) {
+          this.viewSettings.difficulty = this.fields.filter(item => item.length !== 0)[0][0].difficulty
+          data = this.getFieldByDifficulty(this.viewSettings.difficulty)
+        }
+        this.Field = this.sudokuDataClass.setField(data.field)
+        this.fieldId = data.id
+        this.cashedField.id = data.id
+        this.cashedField.basefield = data.field
+        this.cashedField.difficulty = this.viewSettings.difficulty
+        this.cashedField.stack = this.sudokuDataClass.getStack()
       }
-      this.Field = this.sudokuDataClass.setField(data.field)
-      this.fieldId = data.id
-      // this.getField(this.viewSettings.difficulty)
-      //     .then((result) => {
-      //       this.fieldId = result.id
-      //       this.Field = this.sudokuDataClass.setField(result.field)
-      //     }).catch(e => {
-      //   console.log(e)
-      // })
     },
     setDifficulty(value) {
       if (this.viewSettings.difficulty !== value) {
@@ -520,6 +558,7 @@ export default {
     },
     intervalSave() {
       setTimeout(() => {
+        // console.log(1)
         this.viewSettings.advancedPossibly = this.sudokuDataClass.getAdvancedPossibles()
         this.viewSettings.autoSolve = this.sudokuDataClass.getAutoSolve()
         localStorage.setItem('viewSettings', JSON.stringify(this.viewSettings))
@@ -536,6 +575,9 @@ export default {
     this.lang = navigator.language || navigator.userLanguage
     if (localStorage.getItem('viewSettings')) {
       this.viewSettings = {...JSON.parse(localStorage.getItem('viewSettings'))}
+    }
+    if (localStorage.getItem('cashedField')) {
+      this.cashedField = {...JSON.parse(localStorage.getItem('cashedField'))}
     }
     this.setLocalField()
   },
