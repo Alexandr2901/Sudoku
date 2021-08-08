@@ -12,6 +12,10 @@ export default{
         localStorage.removeItem('user')
     },
     SET_FIELDS(state,payload) {
+        // console.log(payload)
+        // payload.forEach(difAr => {
+        //     difAr.filter()
+        // })
         state.fields = payload
         localStorage.setItem('fields' ,JSON.stringify(state.fields))
         // console.log(JSON.parse(JSON.stringify(payload)))

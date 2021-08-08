@@ -47,9 +47,9 @@
         <a href="https://gitlab.com/sanegg29/sudoku">
           back-end
         </a>
-      <a>
-        dtf
-      </a>
+<!--      <a>-->
+<!--        dtf-->
+<!--      </a>-->
     </footer>
   </div>
 </template>
