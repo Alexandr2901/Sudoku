@@ -94,10 +94,15 @@ export default {
       if (this.ButtonId % 9 === 2 || this.ButtonId % 9 === 5) {
         styles.marginRight = '0.6vmin'
         styles.paddingRight = 0
+        // styles.boxShadow = ' 3px 0 red'
       }
       if (this.ButtonId > 17 && this.ButtonId < 27 || this.ButtonId > 44 && this.ButtonId < 54) {
         styles.marginBottom = '0.6vmin'
         styles.paddingBottom = 0
+        // styles.boxShadow = ' 0 3px red'
+        // if (this.ButtonId % 9 === 2 || this.ButtonId % 9 === 5) {
+        //   styles.boxShadow = ' 3px 3px red'
+        // }
       }
       if (this.wrongIds.has(this.ButtonId) || this.localData.possibly.size === 0 && !this.localData.const && (this.localData.value === 0)) {
         styles.backgroundColor = '#FDD2C9'
@@ -134,8 +139,8 @@ export default {
   background: #F5F5F5;
   flex-direction: row;
   flex-wrap: wrap;
-  padding: 0.5vmin;
-  margin: 0.1vmin;
+  padding: 0.43vmin;
+  margin: 0.085vmin;
   box-sizing: border-box;
   color: #434691;
   transition: background-color .3s linear;

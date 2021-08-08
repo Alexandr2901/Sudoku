@@ -622,7 +622,7 @@ header {
   margin-right: auto;
   max-width: 100vw;
   width: 105vmin;
-  height: 5vh;
+  height: 6vh;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -631,8 +631,8 @@ header {
 }
 
 .menuitem {
-  height: 5vh;
-  width: 5vh;
+  height: 6vh;
+  width: 6vh;
   overflow: hidden;
   box-sizing: border-box;
   padding: 5px;
