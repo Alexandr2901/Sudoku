@@ -26,7 +26,7 @@ if (process.env.NODE_ENV === 'production') {
       // if(update) {
       //   window.location.reload(true)
       // }
-      // localStorage.removeItem('viewSettings')
+      localStorage.removeItem('viewSettings')
       // localStorage.clear()
       window.location.reload()
       // caches.keys().then(function(names) {

@@ -315,7 +315,7 @@ export default {
         choiceShow: true,
         menuPanelShow: false,
         prompt: true,
-        advancedPossibly: [1, 1, 0],
+        advancedPossibly: [1, 1, 1],
         removePossibly: false,
         animations: true,
         autoSolve: false,
