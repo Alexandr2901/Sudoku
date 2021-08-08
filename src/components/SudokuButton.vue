@@ -203,7 +203,7 @@ export default {
   height: 30%;
   width: 30%;
   font-size: 33%;
-  line-height: 1.2;
+  line-height: 1;
   user-select: none;
 }
 </style>
