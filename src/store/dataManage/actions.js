@@ -53,7 +53,6 @@ export default {
                 password: password
             })
                 .then(response => {
-                    console.log(response)
                     commit('SET_TOKEN', response.data.token)
                     commit('CHECK_SUCCESS', response.data.user)
                     resolve(response)
@@ -97,13 +96,9 @@ export default {
         })
     },
     update({commit},data) {
-        // let id = 6
-        //{name:'123',email: '123'}
-        console.log(data)
         return new Promise((resolve, reject) => {
             axios.put(api + 'user/6',{name:data.name,email:data.email})
                 .then(response => {
-                    // console.log(response)
                     commit('CHECK_SUCCESS', response.data.data)
                     resolve(response)
                 })

@@ -48,6 +48,11 @@ export default {
     this.pullLeaderBoard().then(res=>{
       this.board = res.data
     })
+    setInterval(()=>{
+      this.pullLeaderBoard().then(res=>{
+        this.board = res.data
+      })
+    },300000)
   }
 }
 </script>

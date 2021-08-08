@@ -17,9 +17,9 @@
       <h3 v-else>
         вход
       </h3>
-      <input v-if="isRegistration" v-model="name" placeholder="name">
-      <input v-model="email" placeholder="email">
-      <input v-model="password" placeholder="password">
+      <input v-bind:class="{wrong: wrong.name}" v-if="isRegistration" v-model="name" placeholder="name">
+      <input v-bind:class="{wrong: wrong.email}" v-model="email" placeholder="email">
+      <input v-bind:class="{wrong: wrong.password}" v-model="password" placeholder="password">
       <button @click="register" v-if="isRegistration">
         зарегистрироваться
       </button>
@@ -35,8 +35,8 @@
     </div>
     <div v-else>
       <div style="max-width: 75vw" v-if="getUser" class="inputs">
-        <input @input="changed = true" v-model="user.name" placeholder="name">
-        <input @input="changed = true" v-model="user.email" placeholder="email">
+        <input v-bind:class="{wrong: wrong.name}"  @input="changed = true" v-model="user.name" placeholder="name">
+        <input v-bind:class="{wrong: wrong.email}" @input="changed = true" v-model="user.email" placeholder="email">
       </div>
       <button v-if="changed" @click="updateUser">
         обновить данные
@@ -64,6 +64,11 @@ export default {
       user:{
         name:'',
         email:''
+      },
+      wrong: {
+        name:false,
+        email:false,
+        password:false,
       }
     }
   },
@@ -91,13 +96,18 @@ export default {
           this.user.email = this.getUser.email
         })
       }).catch(error => {
-        console.log(error.response.data.errors)
         if (error.response.data.errors) {
           if (error.response.data.errors.password) {
-            this.password = ''
+            this.wrong.password = true
+            setTimeout(()=>{
+              this.wrong.password = false
+            },2500)
           }
           if (error.response.data.errors.email) {
-            this.email = ''
+            this.wrong.email = true
+            setTimeout(()=>{
+              this.wrong.email = false
+            },2500)
           }
         }
       })
@@ -107,6 +117,22 @@ export default {
         router.push('Sudoku')
         this.user.name = this.getUser.name
         this.user.email = this.getUser.email
+      }).catch(error => {
+        console.log(error.response.data.errors)
+        if (error.response.data.errors) {
+          if (error.response.data.errors.password) {
+            this.wrong.password = true
+            setTimeout(()=>{
+              this.wrong.password = false
+            },2500)
+          }
+          if (error.response.data.errors.email) {
+            this.wrong.email = true
+            setTimeout(()=>{
+              this.wrong.email = false
+            },2500)
+          }
+        }
       })
     },
     updateUser() {
@@ -114,6 +140,22 @@ export default {
         this.user.name = this.getUser.name
         this.user.email = this.getUser.email
         this.changed = false
+      }).catch(error => {
+        console.log(error.response.data.errors)
+        if (error.response.data.errors) {
+          if (error.response.data.errors.name) {
+            this.wrong.name = true
+            setTimeout(()=>{
+              this.wrong.name = false
+            },2500)
+          }
+          if (error.response.data.errors.email) {
+            this.wrong.email = true
+            setTimeout(()=>{
+              this.wrong.email = false
+            },2500)
+          }
+        }
       })
     }
   },
@@ -148,6 +190,16 @@ export default {
 }
 input{
   font-size: 3vh;
+  color:#434691;
+  border-color: rgb(133, 133, 133);
+  transition: all 1s linear;
+}
+.wrong{
+  color: red;
+  transform: scale3d(1.1,1.1,1.1);
+  /*text-shadow: #434691 20px 20px;*/
+  /*background-color: #434691;*/
+  border-color: red;
 }
 button{
   font-size: 2.5vh;
