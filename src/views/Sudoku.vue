@@ -544,6 +544,7 @@ export default {
     setDifficulty(value) {
       if (this.viewSettings.difficulty !== value) {
         this.viewSettings.difficulty = value
+        this.cashedShowed = true
         this.setLocalField()
       }
     },
