@@ -23,8 +23,14 @@
       <button @click="register" v-if="isRegistration">
         зарегистрироваться
       </button>
-      <button @click="enter" v-else>
-        войти
+        <button @click="enter" v-else >
+          войти
+        </button>
+      <button @click="vkAuth">
+        войти через вк
+      </button>
+      <button @click="gitHubAuth">
+        войти через gitHub
       </button>
       <div class="change" @click="isRegistration = !isRegistration" v-if="!isRegistration">
         регистрация
@@ -85,6 +91,24 @@ export default {
       logOut: 'dataManage/logOut',
       update: 'dataManage/update',
     }),
+    vkAuth() {
+      let url = 'https://oauth.vk.com/authorize?client_id=7924358&display=page' +
+          '&redirect_uri=http://0.0.0.0:80/api/auth/redirect&response_type=code&v=5.131'
+      // url +=
+
+      //https://sudokueasy.herokuapp.com/api/auth/vksignin
+      window.open(url)
+      console.log('vkAuth')
+    },
+    gitHubAuth() {
+      let url = 'https://github.com/login/oauth/authorize' +
+          '?client_id=88ad86b44d63858de0c6' +
+          '&redirect_uri=http://localhost:8080/auth/callback'
+      // url +=
+      //https://sudokueasy.herokuapp.com/api/auth/vksignin
+      window.open(url)
+
+    },
     back() {
       router.push('/Home')
     },
