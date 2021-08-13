@@ -30,6 +30,7 @@
 <!--        <a href="http://0.0.0.0/api/login/vkontakte">-->
           войти через вк
 <!--        </a>-->
+
       </button>
       <button @click="signInSocial('github')">
         <!--        <a href="http://0.0.0.0/api/login/vkontakte">-->
