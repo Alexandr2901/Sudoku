@@ -26,17 +26,18 @@
         <button @click="enter" v-else >
           войти
         </button>
-      <button @click="vkAuth('http://0.0.0.0/api/login/vkontakte')">
+      <button @click="vkAuth('https://sudokueasy.herokuapp.com/api/login/vkontakte')">
 
 <!--        <a href="http://0.0.0.0/api/login/vkontakte">-->
           войти через вк
 <!--        </a>-->
       </button>
+      <button @click="vkAuth('https://sudokueasy.herokuapp.com/api/login/vkontakte')">
 
-                <a href="http://0.0.0.0/api/login/github">
+<!--                <a href="http://0.0.0.0/api/login/github">-->
         войти через gitHub
-                </a>
-<!--      </button>-->
+<!--                </a>-->
+      </button>
       <div class="change" @click="isRegistration = !isRegistration" v-if="!isRegistration">
         регистрация
       </div>
