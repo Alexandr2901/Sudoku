@@ -26,11 +26,15 @@
         <button @click="enter" v-else >
           войти
         </button>
-      <button @click="vkAuth">
-        войти через вк
+      <button @click="signInSocial('vkontakte')">
+<!--        <a href="http://0.0.0.0/api/login/vkontakte">-->
+          войти через вк
+<!--        </a>-->
       </button>
-      <button @click="gitHubAuth">
+      <button @click="signInSocial('github')">
+        <!--        <a href="http://0.0.0.0/api/login/vkontakte">-->
         войти через gitHub
+        <!--        </a>-->
       </button>
       <div class="change" @click="isRegistration = !isRegistration" v-if="!isRegistration">
         регистрация
@@ -90,6 +94,7 @@ export default {
       signIn: 'dataManage/signIn',
       logOut: 'dataManage/logOut',
       update: 'dataManage/update',
+      signInSocial: 'dataManage/signInSocial',
     }),
     vkAuth() {
       let url = 'https://oauth.vk.com/authorize?client_id=7924358&display=page' +
@@ -101,9 +106,7 @@ export default {
       console.log('vkAuth')
     },
     gitHubAuth() {
-      let url = 'https://github.com/login/oauth/authorize' +
-          '?client_id=88ad86b44d63858de0c6' +
-          '&redirect_uri=http://localhost:8080/auth/callback'
+      let url = 'https://github.com/login/oauth/authorize?client_id=88ad86b44d63858de0c6&redirect_uri=http://0.0.0.0/auth/redirect'
       // url +=
       //https://sudokueasy.herokuapp.com/api/auth/vksignin
       window.open(url)
