@@ -62,22 +62,6 @@ export default {
                 })
         })
     },
-    signInSocial({commit},provider) {
-        return new Promise((resolve, reject) => {
-            //http://0.0.0.0/api/login/vkontakte
-            // axios.get('http://0.0.0.0/api/' + 'login/' + provider)
-            axios.get(api + 'login/' + provider)
-                .then(response => {
-                    console.log(response)
-                    commit('SET_TOKEN', response.data.token)
-                    commit('CHECK_SUCCESS', response.data.user)
-                    resolve(response)
-                })
-                .catch(error => {
-                    reject(error)
-                })
-        })
-    },
     check({state,commit}) {
         return new Promise((resolve, reject) => {
             axios.get(api + 'auth/check', {
@@ -90,6 +74,8 @@ export default {
                     resolve(response)
                 })
                 .catch(error => {
+                    console.log(error)
+                    commit('LOG_OUT')
                     reject(error)
                 })
         })
