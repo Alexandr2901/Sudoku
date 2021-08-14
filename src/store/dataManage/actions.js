@@ -74,6 +74,8 @@ export default {
                     resolve(response)
                 })
                 .catch(error => {
+                    console.log(error)
+                    commit('LOG_OUT')
                     reject(error)
                 })
         })

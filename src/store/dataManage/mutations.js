@@ -3,7 +3,7 @@ export default{
         state.token = token
         localStorage.setItem('token',token)
         // console.log('hello')
-        // console.log( localStorage.getItem('token'))
+        console.log(localStorage.getItem('token'))
     },
     LOG_OUT(state) {
         state.token = ''

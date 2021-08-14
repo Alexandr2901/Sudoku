@@ -23,8 +23,21 @@
       <button @click="register" v-if="isRegistration">
         зарегистрироваться
       </button>
-      <button @click="enter" v-else>
-        войти
+        <button @click="enter" v-else >
+          войти
+        </button>
+      <button @click="vkAuth('https://sudokueasy.herokuapp.com/api/login/vkontakte')">
+
+<!--        <a href="http://0.0.0.0/api/login/vkontakte">-->
+          войти через вк
+<!--        </a>-->
+
+      </button>
+      <button @click="vkAuth('https://sudokueasy.herokuapp.com/api/login/github')">
+
+<!--                <a href="http://0.0.0.0/api/login/github">-->
+        войти через gitHub
+<!--                </a>-->
       </button>
       <div class="change" @click="isRegistration = !isRegistration" v-if="!isRegistration">
         регистрация
@@ -49,7 +62,7 @@
 </template>
 
 <script>
-import {mapActions, mapGetters} from "vuex";
+import {mapActions, mapGetters, mapMutations} from "vuex";
 import router from "../router";
 
 export default {
@@ -84,7 +97,22 @@ export default {
       signIn: 'dataManage/signIn',
       logOut: 'dataManage/logOut',
       update: 'dataManage/update',
+      check: 'dataManage/check',
     }),
+    ...mapMutations({
+      setToken: 'dataManage/SET_TOKEN',
+    }),
+    vkAuth(url) {
+      window.open(url)
+      console.log('vkAuth')
+    },
+    gitHubAuth() {
+      let url = 'https://github.com/login/oauth/authorize?client_id=88ad86b44d63858de0c6&redirect_uri=http://0.0.0.0/auth/redirect'
+      // url +=
+      //https://sudokueasy.herokuapp.com/api/auth/vksignin
+      window.open(url)
+
+    },
     back() {
       router.push('/Home')
     },
@@ -157,6 +185,19 @@ export default {
           }
         }
       })
+    },
+    socialiteAnswer(event) {
+      if (event.origin != 'https://sudokueasy.herokuapp.com') {
+        // что-то прислали с неизвестного домена - проигнорируем..
+        return;
+      }
+      // console.log(event.data.token)
+      this.setToken(event.data.token)
+      setTimeout(()=>{
+        this.check()
+      },1)
+
+
     }
   },
   created() {
@@ -164,7 +205,13 @@ export default {
       this.user.name = this.getUser.name
       this.user.email = this.getUser.email
     }
-  }
+    window.addEventListener("message", this.socialiteAnswer);
+  },
+  beforeDestroy() {
+    document.removeEventListener('message', this.socialiteAnswer)
+    document.removeEventListener('message', this.socialiteAnswer)
+
+  },
 }
 </script>
 
