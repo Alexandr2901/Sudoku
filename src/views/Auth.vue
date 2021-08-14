@@ -33,7 +33,7 @@
 <!--        </a>-->
 
       </button>
-      <button @click="vkAuth('https://sudokueasy.herokuapp.com/api/login/github')">
+      <button @click="vkAuth('https://sudokueasy.herokuapp.com/api/login/vkontakte')">
 
 <!--                <a href="http://0.0.0.0/api/login/github">-->
         войти через gitHub
