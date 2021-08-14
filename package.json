@@ -2,13 +2,16 @@
   "name": "front",
   "version": "0.1.0",
   "private": true,
+  "homepage":"./",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "deploy": "vk-miniapps-deploy"
   },
   "dependencies": {
     "@vkontakte/vk-bridge": "^2.4.6",
+    "@vkontakte/vk-miniapps-deploy": "0.0.25",
     "axios": "^0.21.1",
     "core-js": "^3.6.4",
     "register-service-worker": "^1.7.1",

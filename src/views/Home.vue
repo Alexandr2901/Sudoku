@@ -41,12 +41,9 @@
       <router-link to="About">
         о проекте
       </router-link>
-      <a href="https://github.com/Alexandr2901/Sudoku">
-        front-end
+      <a href="https://alexandr2901.github.io/Sudoku/">
+        играть оффлайн
       </a>
-        <a href="https://gitlab.com/sanegg29/sudoku">
-          back-end
-        </a>
 <!--      <a>-->
 <!--        dtf-->
 <!--      </a>-->
