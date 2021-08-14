@@ -1,8 +1,5 @@
 module.exports = {
-    // publicPath: '/Sudoku/',
-    publicPath: process.env.NODE_ENV === 'production'
-        ? '/Sudoku/'
-        : '/',
+    publicPath: '/',
     pwa: {
       workboxPluginMode: 'GenerateSW',
       workboxOptions: {
