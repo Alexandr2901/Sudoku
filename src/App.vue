@@ -10,6 +10,7 @@
 
 
 import {mapActions} from "vuex";
+import bridge from '@vkontakte/vk-bridge';
 
 export default {
 name: 'App',
@@ -17,9 +18,24 @@ name: 'App',
     ...mapActions({
       init: 'dataManage/init',
     }),
+    // bridge.send('VKWebAppInit');
+
   },
   created() {
     this.init()
+    bridge.subscribe(e => console.log(e));
+    bridge
+        .send('VKWebAppGetEmail')
+        .then(data => {
+          // Handling received data
+          console.log(data.email);
+          console.log(data)
+        })
+        .catch(error => {
+          console.log(error)
+          // Handling an error
+        });
+
   }
 }
 </script>
